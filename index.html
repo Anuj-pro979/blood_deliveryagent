@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BloodConnect+ | Blood Donation System</title>
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🩸</text></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Custom styles */
+:root {
+    --primary-color: #e63946;
+    --primary-light: #ff6b6b;
+    --secondary-color: #1a936f;
+    --accent-color: #ffd166;
+    --text-color: #2b2d42;
+    --text-light: #8d99ae;
+    --light-gray: #f8f9fa;
+    --medium-gray: #e9ecef;
+    --dark-gray: #6c757d;
+    --success-color: #06d6a0;
+    --warning-color: #ffd166;
+    --danger-color: #ef476f;
+    --info-color: #118ab2;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+/* Base Styles */
+body {
+    background-color: var(--light-gray);
+    color: var(--text-color);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Container adjustments */
+.container-fluid {
+    max-width: 1920px;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.row {
+    /* min-height: 100vh; */
+    max-height: 100vh;
+    margin: 0;
+}
+
+/* Left Panel */
+.col-md-6.bg-danger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    height: 100vh;
+}
+
+/* Welcome Content */
+.welcome-content {
+    max-width: 600px;
+    text-align: center;
+}
+
+.logo-container {
+    margin-bottom: 3rem;
+}
+
+.logo-container img {
+    max-width: 120px;
+    height: auto;
+    margin-bottom: 1.5rem;
+}
+
+.display-4 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.lead {
+    font-size: 1.25rem;
+    margin-bottom: 2rem;
+}
+
+/* Right Panel */
+.col-md-6.bg-white {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+}
+
+/* Google Login Button */
+.btn-google {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    background: white;
+    border: 1px solid var(--medium-gray);
+    border-radius: var(--border-radius);
+    color: var(--text-color);
+    font-weight: 500;
+    transition: var(--transition);
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+    gap: 0.75rem;
+}
+
+.btn-google:hover {
+    background: var(--light-gray);
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow);
+}
+
+.btn-google svg {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+.btn-google span {
+    white-space: nowrap;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .col-md-6.bg-danger {
+        padding: 2rem;
+    }
+
+    .logo-container {
+        margin-bottom: 2rem;
+    }
+
+    .logo-container img {
+        max-width: 100px;
+    }
+
+    .display-4 {
+        font-size: 2rem;
+    }
+
+    .lead {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .btn-google {
+        padding: 0.625rem 1.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .col-md-6.bg-danger {
+        padding: 1.5rem;
+    }
+
+    .logo-container {
+        margin-bottom: 1.5rem;
+    }
+
+    .display-4 {
+        font-size: 1.75rem;
+    }
+
+    .btn-google {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Left Panel -->
+            <div class="col-md-6 bg-danger">
+                <div class="welcome-content">
+                    <div class="logo-container">
+                        <img src="assets/blood-hand.png" alt="BloodConnect+" class="img-fluid" style="filter: brightness(0) invert(1);">
+                        <h1 class="display-4 fw-bold text-white mb-0">BloodConnect<span class="text-white">+</span></h1>
+                    </div>
+                    <p class="lead text-white mb-5">Uniting Hearts, Saving Lives</p>
+                    <div class="d-grid gap-3 col-lg-8 mx-auto">
+                        <button id="googleLogin" class="btn btn-google btn-light">
+                            <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                                <path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/>
+                                <path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/>
+                                <path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/>
+                                <path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571c0.001-0.001,0.002-0.001,0.003-0.002l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/>
+                            </svg>
+                            <span>Continue with Google</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Panel -->
+            <div class="col-md-6 bg-white d-none d-md-flex">
+                <div class="text-center text-dark p-5">
+                    <div class="mb-4">
+                        <i class="bi bi-heart-pulse display-1 text-danger"></i>
+                    </div>
+                    <h2 class="fw-bold mb-4">Make a Difference Today</h2>
+                    <div class="row g-4 justify-content-center">
+                        <div class="col-sm-6">
+                            <div class="p-4 bg-danger bg-opacity-10 rounded-4">
+                                <i class="bi bi-droplet-fill fs-2 mb-3 text-danger"></i>
+                                <h5 class="fw-bold">Donate Blood</h5>
+                                <p class="mb-0 small">Your donation can save up to three lives</p>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="p-4 bg-danger bg-opacity-10 rounded-4">
+                                <i class="bi bi-geo-alt-fill fs-2 mb-3 text-danger"></i>
+                                <h5 class="fw-bold">Find Donors</h5>
+                                <p class="mb-0 small">Connect with nearby blood donors</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="delivery_agent.js"></script>
+</body>
+</html>

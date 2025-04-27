@@ -1,0 +1,236 @@
+/* Delivery Agent Specific Styles */
+:root {
+    /* Delivery Status Colors */
+    --status-pending: var(--warning-color);
+    --status-accepted: var(--info-color);
+    --status-picked: var(--primary-color);
+    --status-delivered: var(--success-color);
+    --status-cancelled: var(--danger-color);
+}
+
+/* Delivery Card Styles */
+.order-card {
+    border-left: 4px solid var(--primary-color);
+    transition: var(--transition);
+    background: white;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.order-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.order-card .card-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    color: white;
+    padding: 1rem;
+    border-bottom: none;
+}
+
+.order-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.order-commission {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+/* Location Indicators */
+.location-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 8px;
+}
+
+.pickup-dot {
+    background-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.2);
+}
+
+.drop-dot {
+    background-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(26, 147, 111, 0.2);
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.status-pending {
+    background: rgba(255, 209, 102, 0.1);
+    color: var(--warning-color);
+}
+
+.status-accepted {
+    background: rgba(17, 138, 178, 0.1);
+    color: var(--info-color);
+}
+
+.status-picked {
+    background: rgba(230, 57, 70, 0.1);
+    color: var(--primary-color);
+}
+
+.status-delivered {
+    background: rgba(6, 214, 160, 0.1);
+    color: var(--success-color);
+}
+
+.status-cancelled {
+    background: rgba(239, 71, 111, 0.1);
+    color: var(--danger-color);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.action-buttons .btn {
+    flex: 1;
+    padding: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-accept {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    color: white;
+}
+
+.btn-accept:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--box-shadow-hover);
+}
+
+.btn-decline {
+    background: var(--light-gray);
+    color: var(--text-color);
+}
+
+.btn-decline:hover {
+    background: var(--medium-gray);
+    transform: translateY(-2px);
+}
+
+/* Order Count Badge */
+.order-count-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--accent-color);
+    color: var(--text-color);
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+/* Distance Info */
+.distance-info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--medium-gray);
+}
+
+.distance-info .text-muted {
+    font-size: 0.9rem;
+}
+
+.distance-info .fw-bold {
+    color: var(--text-color);
+    font-size: 1.1rem;
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: var(--border-radius);
+    border: none;
+    box-shadow: var(--box-shadow);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+    color: white;
+    border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+.modal-title {
+    font-weight: 700;
+}
+
+/* Form Elements */
+.form-control {
+    border-radius: var(--border-radius);
+    border: 1px solid var(--medium-gray);
+    padding: 0.75rem 1rem;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+}
+
+/* Online Status Toggle */
+.form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .order-card {
+        margin-bottom: 1rem;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .distance-info {
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+
+/* Animations */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(230, 57, 70, 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(230, 57, 70, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(230, 57, 70, 0);
+    }
+}
+
+.order-card:hover .pickup-dot,
+.order-card:hover .drop-dot {
+    animation: pulse 2s infinite;
+} 

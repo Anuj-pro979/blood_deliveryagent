@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery History - Blood Donation System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="../styles.css">
+    <style>
+        /* Custom styles for responsive navbar */
+        body {
+            padding-bottom: 70px; /* Space for mobile navbar */
+            background-color: #f8f9fa;
+        }
+        
+        .desktop-nav {
+            background-color: #dc3545;
+        }
+        
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #ffffff;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+        
+        .mobile-nav .nav-item {
+            text-align: center;
+            flex: 1;
+        }
+        
+        .mobile-nav .nav-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #6c757d;
+            padding: 8px 0;
+            font-size: 0.8rem;
+        }
+        
+        .mobile-nav .nav-link.active {
+            color: #dc3545;
+        }
+        
+        .mobile-nav i {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+        
+        .circle-icon {
+            width: 40px;
+            height: 40px;
+            background-color: #dc3545;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 768px) {
+            .desktop-nav {
+                display: none;
+            }
+            
+            .mobile-nav {
+                display: flex;
+            }
+        }
+        
+        /* Enhanced History Page Styles */
+        .page-header {
+            background: linear-gradient(135deg, #dc3545 0%, #b02a37 100%);
+            color: white;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .filter-bar {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .history-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid #6c757d;
+            margin-bottom: 1rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            background-color: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .history-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .history-card.completed {
+            border-left-color: #198754;
+        }
+        
+        .history-card.in-progress {
+            border-left-color: #0d6efd;
+        }
+        
+        .history-card.pending {
+            border-left-color: #ffc107;
+        }
+        
+        .history-card.cancelled {
+            border-left-color: #dc3545;
+        }
+        
+        .card-header-custom {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #eee;
+            padding: 0.75rem 1.25rem;
+        }
+        
+        .badge-completed {
+            background-color: #198754;
+        }
+        
+        .badge-in-progress {
+            background-color: #0d6efd;
+        }
+        
+        .badge-pending {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        
+        .badge-cancelled {
+            background-color: #dc3545;
+        }
+        
+        .animated-icon {
+            transition: transform 0.5s ease;
+        }
+        
+        .btn:hover .animated-icon {
+            transform: rotate(180deg);
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background-color: #dee2e6;
+        }
+        
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            left: -4px;
+            top: 0;
+            height: 10px;
+            width: 10px;
+            border-radius: 50%;
+            background-color: #0d6efd;
+        }
+        
+        .timeline-item.completed:after {
+            background-color: #198754;
+        }
+        
+        .stats-card {
+            background-color: white;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stats-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #dc3545;
+        }
+        
+        .no-records {
+            text-align: center;
+            padding: 3rem;
+            background-color: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .no-records i {
+            font-size: 4rem;
+            color: #dc3545;
+            opacity: 0.5;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Desktop Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark desktop-nav">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-droplet-fill me-2"></i>Blood Donation System
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html">
+                            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="history.html">
+                            <i class="bi bi-clock-history me-1"></i> Delivery History
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="profile.html">
+                            <i class="bi bi-person-fill me-1"></i> Profile
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <button id="logoutBtn" class="btn btn-light btn-sm mt-1">
+                            <i class="bi bi-box-arrow-right me-1"></i> Logout
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Bottom Navbar -->
+    <nav class="navbar navbar-expand mobile-nav">
+        <ul class="navbar-nav w-100">
+            <li class="nav-item">
+                <a class="nav-link" href="dashboard.html">
+                    <i class="bi bi-speedometer2"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="history.html">
+                    <i class="bi bi-clock-history"></i>
+                    <span>History</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="profile.html">
+                    <i class="bi bi-person-fill"></i>
+                    <span>Profile</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">
+                    <div class="circle-icon">
+                        <i class="bi bi-person-check-fill" style="font-size: 1.2rem;"></i>
+                    </div>
+                    <span></span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container mt-4">
+        <div id="debug-info" class="alert alert-secondary mb-3 small">
+            <p class="mb-0"><strong>Status:</strong> <span id="debug-status">Loading delivery history...</span></p>
+        </div>
+
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h2><i class="bi bi-clock-history me-2"></i>Delivery History</h2>
+                    <p class="mb-0">Track and review all your past and ongoing deliveries</p>
+                </div>
+                <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                    <button class="btn btn-light" id="refreshBtn">
+                        <i class="bi bi-arrow-clockwise me-2 animated-icon"></i> Refresh Data
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-3 col-6 mb-3">
+                <div class="stats-card text-center">
+                    <div class="stats-value">24</div>
+                    <div class="stats-label">Total Deliveries</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="stats-card text-center">
+                    <div class="stats-value">18</div>
+                    <div class="stats-label">Completed</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="stats-card text-center">
+                    <div class="stats-value">3</div>
+                    <div class="stats-label">In Progress</div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="stats-card text-center">
+                    <div class="stats-value">95%</div>
+                    <div class="stats-label">On Time Rate</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-bar mb-4">
+            <div class="row">
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <select class="form-select" id="statusFilter">
+                        <option value="all">All Status</option>
+                        <option value="completed">Completed</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="pending">Pending</option>
+                        <option value="cancelled">Cancelled</option>
+                    </select>
+                </div>
+                <div class="col-md-4 mb-3 mb-md-0">
+                    <select class="form-select" id="dateFilter">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search by ID or location..." id="searchInput">
+                        <button class="btn btn-outline-secondary" type="button" id="searchBtn">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="deliveryHistoryContainer">
+            <!-- Sample delivery history cards - these would be dynamically generated in a real app -->
+            <div class="history-card completed">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Delivery #BLD-2023-0124</h5>
+                    <span class="badge badge-completed">Completed</span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong><i class="bi bi-droplet-fill me-2 text-danger"></i>Blood Type:</strong> O+</p>
+                            <p><strong><i class="bi bi-geo-alt-fill me-2"></i>From:</strong> Central Blood Bank</p>
+                            <p><strong><i class="bi bi-geo-alt-fill me-2"></i>To:</strong> City General Hospital</p>
+                            <p><strong><i class="bi bi-calendar2-event me-2"></i>Date:</strong> April 12, 2025</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong><i class="bi bi-box-seam me-2"></i>Units:</strong> 2</p>
+                            <p><strong><i class="bi bi-hourglass-split me-2"></i>Delivery Time:</strong> 45 minutes</p>
+                            <p><strong><i class="bi bi-speedometer me-2"></i>Distance:</strong> 5.2 km</p>
+                            <p><strong><i class="bi bi-person-lines-fill me-2"></i>Recipient:</strong> Dr. Sarah Johnson</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <h6><i class="bi bi-activity me-2"></i>Delivery Timeline:</h6>
+                    <div class="timeline-item completed">
+                        <small class="text-muted">09:15 AM</small>
+                        <p class="mb-0">Picked up from Central Blood Bank</p>
+                    </div>
+                    <div class="timeline-item completed">
+                        <small class="text-muted">09:35 AM</small>
+                        <p class="mb-0">In transit with temperature-controlled container</p>
+                    </div>
+                    <div class="timeline-item completed">
+                        <small class="text-muted">10:00 AM</small>
+                        <p class="mb-0">Delivered to City General Hospital, signed by Dr. Sarah Johnson</p>
+                    </div>
+                    <div class="text-end mt-3">
+                        <button class="btn btn-sm btn-outline-secondary me-2" data-bs-toggle="tooltip" title="Download Receipt">
+                            <i class="bi bi-download me-1"></i>Receipt
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-eye me-1"></i>View Details
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-card in-progress">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Delivery #BLD-2023-0125</h5>
+                    <span class="badge badge-in-progress">In Progress</span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong><i class="bi bi-droplet-fill me-2 text-danger"></i>Blood Type:</strong> AB-</p>
+                            <p><strong><i class="bi bi-geo-alt-fill me-2"></i>From:</strong> Regional Blood Center</p>
+                            <p><strong><i class="bi bi-geo-alt-fill me-2"></i>To:</strong> Memorial Hospital</p>
+                            <p><strong><i class="bi bi-calendar2-event me-2"></i>Date:</strong> April 20, 2025</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong><i class="bi bi-box-seam me-2"></i>Units:</strong> 1</p>
+                            <p><strong><i class="bi bi-hourglass-split me-2"></i>Est. Time:</strong> 35 minutes</p>
+                            <p><strong><i class="bi bi-speedometer me-2"></i>Distance:</strong> 3.8 km</p>
+                            <p><strong><i class="bi bi-person-lines-fill me-2"></i>Recipient:</strong> Dr. Michael Lee</p>
+                        </div>
+                    </div>
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill me-2"></i>This delivery is marked as urgent!
+                    </div>
+                    <hr>
+                    <h6><i class="bi bi-activity me-2"></i>Delivery Timeline:</h6>
+                    <div class="timeline-item completed">
+                        <small class="text-muted">14:30 PM</small>
+                        <p class="mb-0">Picked up from Regional Blood Center</p>
+                    </div>
+                    <div class="timeline-item">
+                        <small class="text-muted">14:45 PM</small>
+                        <p class="mb-0">In transit with temperature-controlled container</p>
+                    </div>
+                    <div class="text-end mt-3">
+                        <button class="btn btn-sm btn-success me-2">
+                            <i class="bi bi-check-circle me-1"></i>Mark as Delivered
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger me-2">
+                            <i class="bi bi-exclamation-triangle me-1"></i>Report Issue
+                        </button>
+                        <button class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-map me-1"></i>Track
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="history-card pending">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Delivery #BLD-2023-0126</h5>
+                    <span class="badge badge-pending">Scheduled</span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p><strong><i class="bi bi-droplet-fill me-2 text-danger"></i>Blood Type:</strong> A+</p>
+                            <p><strong><i class="bi bi-geo-alt-fill me-2"></i>From:</strong> Central Blood Bank</p>
+                            <p><strong><i class="bi bi-geo-alt-fill me-2"></i>To:</strong> St. Luke's Hospital</p>
+                            <p><strong><i class="bi bi-calendar2-event me-2"></i>Date:</strong> April 21, 2025</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong><i class="bi bi-box-seam me-2"></i>Units:</strong> 3</p>
+                            <p><strong><i class="bi bi-hourglass-split me-2"></i>Est. Time:</strong> 50 minutes</p>
+                            <p><strong><i class="bi bi-speedometer me-2"></i>Distance:</strong> 7.1 km</p>
+                            <p><strong><i class="bi bi-person-lines-fill me-2"></i>Recipient:</strong> Dr. Emily Chen</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <h6><i class="bi bi-alarm me-2"></i>Scheduled For:</h6>
+                    <p>Tomorrow, 9:00 AM</p>
+                    <div class="text-end mt-3">
+                        <button class="btn btn-sm btn-outline-success me-2">
+                            <i class="bi bi-check-circle me-1"></i>Accept Delivery
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-x-circle me-1"></i>Decline
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty state for when there are no deliveries -->
+        <div class="no-records" style="display: none;">
+            <i class="bi bi-inbox-fill d-block"></i>
+            <h4>No Delivery Records Found</h4>
+            <p class="text-muted">You don't have any delivery records that match your current filters.</p>
+            <button class="btn btn-outline-danger mt-2" id="resetFiltersBtn">
+                <i class="bi bi-arrow-counterclockwise me-2"></i>Reset Filters
+            </button>
+        </div>
+
+        <!-- Pagination -->
+        <nav aria-label="Delivery history pagination" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item disabled">
+                    <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                    <a class="page-link" href="#">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="delivery_agent.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            });
+            
+            // Debug info auto-hide
+            const debugInfo = document.getElementById('debug-info');
+            if (debugInfo) {
+                const debugStatus = document.getElementById('debug-status');
+                setTimeout(() => {
+                    debugStatus.textContent = 'Delivery history loaded successfully';
+                    setTimeout(() => {
+                        debugInfo.style.display = 'none';
+                    }, 2000);
+                }, 1500);
+            }
+            
+            // Filtering functionality
+            const statusFilter = document.getElementById('statusFilter');
+            const dateFilter = document.getElementById('dateFilter');
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const resetFiltersBtn = document.getElementById('resetFiltersBtn');
+            
+            // Simple filter demo (would be replaced with actual filtering logic)
+            function applyFilters() {
+                const cards = document.querySelectorAll('.history-card');
+                const noRecords = document.querySelector('.no-records');
+                
+                // For demo purposes, if specific filters are set, show no results
+                if (statusFilter.value === 'cancelled' || 
+                    dateFilter.value === 'today' || 
+                    (searchInput.value && searchInput.value.length > 0)) {
+                    cards.forEach(card => card.style.display = 'none');
+                    noRecords.style.display = 'block';
+                } else {
+                    cards.forEach(card => card.style.display = 'block');
+                    noRecords.style.display = 'none';
+                }
+            }
+            
+            statusFilter.addEventListener('change', applyFilters);
+            dateFilter.addEventListener('change', applyFilters);
+            searchBtn.addEventListener('click', applyFilters);
+            
+            resetFiltersBtn.addEventListener('click', function() {
+                statusFilter.value = 'all';
+                dateFilter.value = 'all';
+                searchInput.value = '';
+                
+                const cards = document.querySelectorAll('.history-card');
+                const noRecords = document.querySelector('.no-records');
+                
+                cards.forEach(card => card.style.display = 'block');
+                noRecords.style.display = 'none';
+            });
+            
+            // Refresh animation
+            const refreshBtn = document.getElementById('refreshBtn');
+            refreshBtn.addEventListener('click', function() {
+                const icon = this.querySelector('.animated-icon');
+                icon.style.transform = 'rotate(360deg)';
+                
+                // Reset the debug info for demo purposes
+                debugInfo.style.display = 'block';
+                debugStatus.textContent = 'Refreshing delivery history...';
+                
+                setTimeout(() => {
+                    debugStatus.textContent = 'Delivery history refreshed successfully';
+                    setTimeout(() => {
+                        debugInfo.style.display = 'none';
+                    }, 2000);
+                }, 1500);
+                
+                // Reset the icon rotation after animation completes
+                setTimeout(() => {
+                    icon.style.transform = '';
+                }, 500);
+            });
+            
+            // Logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                // Implement logout functionality
+                firebase.auth().signOut().then(() => {
+                    window.location.href = '../login.html';
+                }).catch((error) => {
+                    console.error('Logout error:', error);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
